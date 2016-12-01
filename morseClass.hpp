@@ -21,23 +21,23 @@
 #include <ctype.h>
 #include <sstream>
 
+#include "binaryNode.hpp"
+
 class morseClass{
 public:
-    morseClass();
-    BinaryNode* createBinaryTree(BinaryNode *root, int height);
-    BinaryNode *createBinaryTree(int height);
+    //morseClass();
+    BinaryNode* createBinaryTree(int height);
     std::pair <std::map <char, std::string>, int> readMorseCodeInputFile(std::string fileName);
-    void split(const std::string &s, char delim, std::vector<std::string> &elems);
-    std::vector<std::string> split(const std::string &s, char delim);
     void latinToMorse(std::map <char, std::string> morseCharacterMap);
     void morseToLatin(BinaryNode *root);
     void menu(std::map <char, std::string> morseCharacterMap, BinaryNode *root);
     void printBinaryTree(BinaryNode *root);
     
 private:
-    int BinaryNode;
-    
-    
+    //BinaryNode* root;
+    BinaryNode* createBinaryTree(BinaryNode *root, int height);
+    void split(const std::string &s, char delim, std::vector<std::string> &elems);
+    std::vector<std::string> split(const std::string &s, char delim);
 };
 
 #endif /* morseClass_hpp */

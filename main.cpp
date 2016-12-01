@@ -8,25 +8,7 @@
 #include <cstdlib>
 #include <ctype.h>
 #include <sstream>
-#include "morseClass.hpp"
-
-struct BinaryNode
-{
-	char latinAlphabet;
-	BinaryNode *leftNode;
-	BinaryNode *rightNode;
-
-	static int count;
-
-	BinaryNode()
-	{
-		char latinAlphabet = '\0';
-		leftNode = NULL;
-		rightNode = NULL;
-	}
-};
-
-int BinaryNode::count = 0;
+#include "morseClass.h"
 
 int main()
 {

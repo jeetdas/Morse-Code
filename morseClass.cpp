@@ -9,11 +9,10 @@
 #include "morseClass.hpp"
 
 //creates a binary tree for the letters in morse code
-morseClass::BinaryNode* createBinaryTree(BinaryNode *root, int height)
+BinaryNode* morseClass::createBinaryTree(BinaryNode *root, int height)
 {
     if (height <= 0)
     {
-        ++BinaryNode::count;
         //std::cout << "Number of ends reached = " << BinaryNode::count << std::endl;
         return NULL;
     }
@@ -35,7 +34,7 @@ morseClass::BinaryNode* createBinaryTree(BinaryNode *root, int height)
     return root;
 }
 
-morseClass::BinaryNode *createBinaryTree(int height)
+BinaryNode* morseClass::createBinaryTree(int height)
 {
     BinaryNode *root;
     root = createBinaryTree(root, height+1);
