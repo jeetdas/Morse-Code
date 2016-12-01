@@ -11,8 +11,8 @@
 BinaryNode::BinaryNode()
 {
     char latinAlphabet = '\0';
-    leftNode = NULL;
-    rightNode = NULL;
+    leftNode = nullptr;
+    rightNode = nullptr;
 }
 
 char BinaryNode::getLatinAlphabet()
