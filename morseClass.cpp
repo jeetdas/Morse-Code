@@ -38,13 +38,25 @@ BinaryNode* morseClass::createBinaryTree(int height)
 {
     BinaryNode *root = new BinaryNode();
     root = createBinaryTree(root, height+1);
+	BinaryNode *temp;
+	for (std::map <char, std::string>::iterator it = morseCharacterMap.begin(); it != morseCharacterMap.end(); ++it)
+	{
+		temp = root;
+		for (int i = 0; i < ((*it).second).length(); ++i)
+		{
+			if (((*it).second)[i] == '.')
+				temp = temp->getLeftNode();
+			else
+				temp = temp->getRightNode();
+		}
+		temp->setLatinAlphabet((*it).first);
+	}
     return root;
 }
 
 //reads in the file of letters to their morse code symbols
-std::pair <std::map <char, std::string>, int> morseClass::readMorseCodeInputFile(std::string fileName)
+int morseClass::readMorseCodeInputFile(std::string fileName)
 {
-    std::map <char, std::string> morseCharacterMap;
     char key;
     std::string value;
     int maxLength = 0;
@@ -52,14 +64,14 @@ std::pair <std::map <char, std::string>, int> morseClass::readMorseCodeInputFile
     while (!fin.eof())
     {
         fin >> key;
+		validKeys.push_back(key);
         fin >> value;
         if (value.length() > maxLength)
             maxLength = value.length();
         morseCharacterMap[key] = value;
     }
     fin.close();
-    std::pair <std::map <char, std::string>, int> returnVal (morseCharacterMap, maxLength);
-    return returnVal;
+    return maxLength;
 }
 
 void morseClass::split(const std::string &s, char delim, std::vector<std::string> &elems) {
@@ -78,7 +90,7 @@ std::vector<std::string> morseClass::split(const std::string &s, char delim) {
 }
 
 //converts the letters given from the user and converts them to morse code and outputs to the user
-void morseClass::latinToMorse(std::map <char, std::string> morseCharacterMap)
+void morseClass::latinToMorse()
 {
     std::string str, morseStr;
     char c;
@@ -91,7 +103,13 @@ void morseClass::latinToMorse(std::map <char, std::string> morseCharacterMap)
     for (std::string::iterator it = str.begin(); it != str.end(); ++it)
     {
         c = tolower(*it);
-        morseStr += morseCharacterMap[*it] + " ";
+		if (validKey(c))
+			morseStr += morseCharacterMap[c] + " ";
+		else
+		{
+			std::cerr << "Invalid character. Character not present in table. Try again." << std::endl;
+			return;
+		}
     }
     
     std::cout << "Converted string = " << morseStr << std::endl;
@@ -117,16 +135,26 @@ void morseClass::morseToLatin(BinaryNode *root)
         for (std::string::iterator it = (*itt).begin(); it != (*itt).end(); ++it)
         {
             //std::cout << "1 " << temp->latinAlphabet << std::endl;
-            if (*it == '.')
+			if (temp == nullptr)
+			{
+				std::cerr << "Invalid morse code, please try again." << std::endl;
+				return;
+			}
+            else if (*it == '.')
             {
                 temp = temp->getLeftNode();
                 //std::cout << "2" << temp->latinAlphabet << std::endl;
             }
-            else
+            else if (*it == '_')
             {
                 temp = temp->getRightNode();
                 //std::cout << "2" << temp->latinAlphabet << std::endl;
             }
+			else
+			{
+				std::cerr << "Invalid morse code, please try again." << std::endl;
+				return;
+			}
             //std::cout << "3" << temp->latinAlphabet << std::endl;
         }
         //std::cout << "lala 1 = " << latinStr << std::endl;
@@ -137,7 +165,7 @@ void morseClass::morseToLatin(BinaryNode *root)
     std::cout << "Converted string = " << latinStr << std::endl;
 }
 
-void morseClass::menu(std::map <char, std::string> morseCharacterMap, BinaryNode *root)
+void morseClass::menu(BinaryNode *root)
 {
     while (true)
     {
@@ -151,7 +179,7 @@ void morseClass::menu(std::map <char, std::string> morseCharacterMap, BinaryNode
         switch(opt)
         {
             case 1:
-                latinToMorse(morseCharacterMap);
+                latinToMorse();
                 break;
             case 2:
                 morseToLatin(root);
@@ -169,4 +197,27 @@ void morseClass::printBinaryTree(BinaryNode *root)
     std::cout << "VAL " << root->getRightNode()->getLeftNode()->getLeftNode()->getLeftNode()->getLatinAlphabet() << std::endl;
 }
 
+void morseClass::putValueInMorseMap(char c, std::string val)
+{
+	// Add try and catch
+	morseCharacterMap[c] = val;
+}
+std::string morseClass::getValueInMorseMap(char c)
+{
+	// Check if exists, else return -1
+	return morseCharacterMap[c];
+}
 
+void morseClass::putInValidKeys(char c)
+{
+	validKeys.push_back(c);
+}
+bool morseClass::validKey(char c)
+{
+	// Check if c in validKeys vector
+	if (std::find(validKeys.begin(), validKeys.end(), c) != validKeys.end())
+		return true;
+	else
+		return false;
+	
+}
