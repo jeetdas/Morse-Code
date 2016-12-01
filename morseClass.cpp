@@ -23,11 +23,11 @@ BinaryNode* morseClass::createBinaryTree(BinaryNode *root, int height)
         {
             //#omp section
             {
-                root->leftNode = createBinaryTree(root->leftNode, height-1);
+                root->setLeftNode(createBinaryTree(root->getLeftNode(), height-1));
             }
             //#omp section
             {
-                root->rightNode = createBinaryTree(root->rightNode, height-1);
+                root->setRightNode(createBinaryTree(root->getRightNode(), height-1));
             }
         }
     }
@@ -36,7 +36,7 @@ BinaryNode* morseClass::createBinaryTree(BinaryNode *root, int height)
 
 BinaryNode* morseClass::createBinaryTree(int height)
 {
-    BinaryNode *root;
+    BinaryNode *root = new BinaryNode();
     root = createBinaryTree(root, height+1);
     return root;
 }
@@ -119,18 +119,18 @@ void morseClass::morseToLatin(BinaryNode *root)
             //std::cout << "1 " << temp->latinAlphabet << std::endl;
             if (*it == '.')
             {
-                temp = temp->leftNode;
+                temp = temp->getLeftNode();
                 //std::cout << "2" << temp->latinAlphabet << std::endl;
             }
             else
             {
-                temp = temp->rightNode;
+                temp = temp->getRightNode();
                 //std::cout << "2" << temp->latinAlphabet << std::endl;
             }
             //std::cout << "3" << temp->latinAlphabet << std::endl;
         }
         //std::cout << "lala 1 = " << latinStr << std::endl;
-        latinStr += temp->latinAlphabet;
+        latinStr += temp->getLatinAlphabet();
         //std::cout << "lala 2 = " << latinStr << std::endl;
     }
     
@@ -166,7 +166,7 @@ void morseClass::menu(std::map <char, std::string> morseCharacterMap, BinaryNode
 
 void morseClass::printBinaryTree(BinaryNode *root)
 {
-    std::cout << "VAL " << root->rightNode->leftNode->leftNode->leftNode->latinAlphabet << std::endl;
+    std::cout << "VAL " << root->getRightNode()->getLeftNode()->getLeftNode()->getLeftNode()->getLatinAlphabet() << std::endl;
 }
 
 
