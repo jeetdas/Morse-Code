@@ -40,4 +40,5 @@ private:
     std::vector<std::string> split(const std::string &s, char delim);
 };
 
-#endif /* morseClass_hpp */
+#endif /* morseClass_hpp *///
+
